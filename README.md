@@ -73,3 +73,19 @@ Navega pelos níveis 1, 2 e 3 da page table.
 Retorna a entrada da page table correspondente ao endereço virtual, ou cria uma nova se não existir (quando permitido).
 Função mappages
 A função mappages é responsável por configurar as page tables para mapear uma série de endereços virtuais para endereços físicos.
+
+#### Processo:
+Usa walk para garantir que as page tables em cada nível existam.
+Preenche as entradas da page table com os endereços físicos correspondentes e define as permissões apropriadas.
+
+#### Início da Page Table do Kernel
+Na inicialização do xv6, a page table do kernel é criada e configurada pela função kvminit. Ela mapeia todas as áreas de memória física necessárias para o funcionamento do kernel, como código, dados e heap.
+
+### 3.4 Alocação de Memória Física
+#### Estrutura de Alocação de Memória
+O xv6 gerencia a memória física usando uma lista ligada de páginas livres. Cada página tem 4096 bytes (4 KB) de tamanho, e o kernel usa uma estrutura simples para rastrear quais páginas estão livres ou alocadas.
+
+Lista de Páginas Livres: Implementada como uma lista ligada, onde cada página livre aponta para a próxima página livre.
+
+##### Cálculo de Endereços Físicos
+Ao alocar ou liberar páginas, o xv6 converte endereços virtuais em endereços físicos para interagir diretamente com a memória. Por exemplo, ao liberar uma página, o endereço virtual é convertido para o endereço físico correspondente e a página é adicionada de volta à lista de páginas livres.
